@@ -39,3 +39,4 @@ jobs:
           IMAGE_NAME=lianshufeng/llama.cpp:gpu
           docker build -f .devops/cuda.Dockerfile -t $IMAGE_NAME .
           docker push $IMAGE_NAME
+
