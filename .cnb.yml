@@ -1,5 +1,5 @@
 main:
-  push:
+  manual:
     - name: docker-build-and-push
       services:
         - docker
