@@ -1,0 +1,34 @@
+main:
+  push:
+    - name: docker-build-and-push
+      services:
+        - docker
+      docker:
+        image: docker:24-git
+      stages:
+        - name: Docker login (CNB registry)
+          script:
+            - docker login ${CNB_DOCKER_REGISTRY} -u cnb -p "${CNB_TOKEN}"
+        - name: Docker cpu build
+          script:
+            - >
+              IMAGE_LATEST="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest"
+              IMAGE_COMMIT="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT_SHORT}"
+              echo "Build: ${IMAGE_LATEST}"
+              echo "Build: ${IMAGE_COMMIT}"
+              # 强制启用 BuildKit 并使用 plain 进度输出，避免长时间无日志被超时杀掉
+              export DOCKER_BUILDKIT=1
+              export BUILDKIT_PROGRESS=plain
+              docker build --progress=plain \
+                -f ./docker/Dockerfile \
+                -t "${IMAGE_LATEST}" \
+                -t "${IMAGE_COMMIT}" \
+                .
+        - name: Docker cpu push
+          script:
+            - >-
+              docker push
+              "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest"
+            - >-
+              docker push
+              "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT_SHORT}"
