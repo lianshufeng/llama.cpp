@@ -1,13 +1,10 @@
 main:
-  manual:
+  push:
     - name: docker-build-and-push
       services:
         - docker
       docker:
         image: docker:24-git
-      env:
-        ONLY_BUILD: "0"   # 1=只build不push
-        TAG: ""           # 自定义tag，留空则用 CNB_COMMIT_SHORT
       stages:
         - name: Docker login (CNB registry)
           script:
