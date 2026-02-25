@@ -9,7 +9,7 @@ main:
         - name: Docker login (CNB registry)
           script:
             - docker login ${CNB_DOCKER_REGISTRY} -u cnb -p "${CNB_TOKEN}"
-        - name: Docker cpu build
+        - name: Docker build
           script:
             - >
               IMAGE_LATEST="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest"
@@ -20,15 +20,12 @@ main:
               export DOCKER_BUILDKIT=1
               export BUILDKIT_PROGRESS=plain
               docker build --progress=plain \
-                -f ./docker/Dockerfile \
+                -f ./.devops/cpu.Dockerfile \
                 -t "${IMAGE_LATEST}" \
                 -t "${IMAGE_COMMIT}" \
                 .
-        - name: Docker cpu push
+        - name: Docker push
           script:
             - >-
               docker push
               "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest"
-            - >-
-              docker push
-              "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT_SHORT}"
