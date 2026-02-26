@@ -20,7 +20,7 @@ master:
               docker login "${CNB_DOCKER_REGISTRY}" -u cnb -p "${CNB_TOKEN}"
 
               IMAGE_LATEST="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest"
-              IMAGE_COMMIT="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT_SHORT}"
+              IMAGE_COMMIT="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:cpu"
 
               export DOCKER_BUILDKIT=1
               export BUILDKIT_PROGRESS=plain
@@ -66,4 +66,4 @@ master:
                 .
 
               docker push "${IMAGE_GPU}"
-              docker push "${IMAGE_COMMIT_GPU}"
+              # docker push "${IMAGE_COMMIT_GPU}"
