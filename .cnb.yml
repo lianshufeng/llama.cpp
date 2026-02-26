@@ -1,4 +1,4 @@
-main:
+master:
   push:
     - name: docker-build-and-push
       services:
